@@ -1,40 +1,49 @@
-#sudo docker run --name hoge_docker -i -t -p 8080:8080 -v /Users/hoge:/hoge ubuntu:20.04 bash # --shm-size=16g --gpus all
-#export http_proxy='http://...:8080/' # e.g. 127.0.0.0
-#export https_proxy='http://...:8080/'
-#export ftp_proxy='http://...:8080/'
-#export no_proxy='localhost,127.0.0.0/8,::1'
-#export HTTP_PROXY='http://...:8080/'
-#export HTTPS_PROXY='http://...:8080/'
-#export FTP_PROXY='http://...:8080/'
-#export NO_PROXY='localhost,127.0.0.0/8,::1'
+#sudo docker run --name hoge_docker -i -t -p 8080:8080 --shm-size=16g -v /Users/hoge:/hoge ubuntu:20.04 bash # --gpus all
+cd
+#export http_proxy='http://...:8080' # e.g. 127.0.0.1
+#export https_proxy='http://...:8080'
+#export ftp_proxy='http://...:8080'
+#export no_proxy='localhost,127.0.0.1/8,::1'
+#export HTTP_PROXY='http://...:8080'
+#export HTTPS_PROXY='http://...:8080'
+#export FTP_PROXY='http://...:8080'
+#export NO_PROXY='localhost,127.0.0.1/8,::1'
 apt update
 apt install vim git tig
-mkdir -p ~/.vim/bundle
-git clone git://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim
-apt install zsh
-mkdir -p ~/.zsh
-git clone git://github.com/zsh-users/zsh-completions.git ~/.zsh/zsh-completions
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-syntax-highlighting
-exec -l zsh
-#source .zshenv .zshrc .zlogin
-rm -f ~/.zcompdump
-apt install curl
-gi vim > .gitignore_global
+git config --global http.proxy http://...:8080
 git config --global user.name hoge
 git config --global user.email hoge@fuga
 git config --global color.ui true
 git config --global fetch.prune true
+#git clone https://github.com/funsaiteu/dotfiles4docker.git
+#cp dotfiles4docker/.* ~/
+#cp -r dotfiles4docker/.vim ~/
+mkdir -p ~/.vim/bundle
+git clone https://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim
+apt install zsh
+mkdir -p ~/.zsh
+git clone https://github.com/zsh-users/zsh-completions.git ~/.zsh/zsh-completions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-syntax-highlighting
+git clone https://github.com/yyuu/pyenv.git ~/.pyenv
+exec -l zsh
+rm -f ~/.zcompdump
+apt install curl
+gi vim > .gitignore_global
 git config --global core.excludesfile ~/.gitignore_global
 apt install make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev xz-utils tk-dev libffi-dev liblzma-dev
-git clone git://github.com/yyuu/pyenv.git ~/.pyenv
 pyenv install 3.. # e.g. 3.9.10
-pyenv rehash
 pyenv global 3..
 pip install --upgrade pip
 pip install pipenv
 pipenv --python 3..
+#export PIPENV_FILE='/root/Pipfile'
+#export PIPENV_SHELL='/bin/zsh'
 pipenv install jupyterlab
 pipenv shell # <-> exit
 #jupyter-lab --generate-config
 #jupyter lab --port 8080 --ip=0.0.0.0 --allow-root
 apt install bat
+#Ctrl-p+q <-> sudo docker attach hoge_docker
+#sudo docker stop hoge_docker <-> sudo docker start hoge_docker
+#sudo docker -a "hoge fuga" -m "initial commit" hoge_docker hoge_docker:initial_commit
+#sudo docker rm hoge_docker
